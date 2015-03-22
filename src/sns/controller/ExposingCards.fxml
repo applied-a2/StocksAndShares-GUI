@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="230.0" prefWidth="460.0" style="-fx-background-color: #CCCCFF;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sns.controller.ExposingCardsController">
+   <children>
+      <Rectangle fx:id="firstCardRec" arcHeight="5.0" arcWidth="5.0" fill="#1fff4451" height="130.0" layoutX="14.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+      <Rectangle fx:id="secondCardRec" arcHeight="5.0" arcWidth="5.0" fill="#1fff4451" height="130.0" layoutX="123.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+      <Rectangle fx:id="thirdCardRec" arcHeight="5.0" arcWidth="5.0" fill="#1fff4451" height="130.0" layoutX="232.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+      <Rectangle fx:id="fourthCardRec" arcHeight="5.0" arcWidth="5.0" fill="#1fff4451" height="130.0" layoutX="342.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+      <Button layoutX="377.0" layoutY="185.0" mnemonicParsing="false" onAction="#handleCloseButton" text="Close" />
+      <ImageView fx:id="firstCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="24.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="firstCardFunction" layoutX="45.0" layoutY="100.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="firstCardValue" layoutX="45.0" layoutY="121.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondCardValue" layoutX="154.0" layoutY="121.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondCardFunction" layoutX="154.0" layoutY="100.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="thirdCardValue" layoutX="263.0" layoutY="121.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="thirdCardFunction" layoutX="263.0" layoutY="100.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="fourthCardValue" layoutX="373.0" layoutY="121.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="fourthCardFunction" layoutX="373.0" layoutY="100.0" text="Label" textFill="#d30000">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="secondCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="133.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="thirdCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="242.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="fourthCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="352.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true" />
+   </children>
+</AnchorPane>

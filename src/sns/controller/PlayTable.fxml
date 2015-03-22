@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sns.controller.PlayTableController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#8cff8e59" height="80.0" layoutX="2.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" width="106.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f93ff4f" height="149.0" layoutX="169.0" layoutY="163.0" stroke="BLACK" strokeType="INSIDE" width="257.0" />
+      <Rectangle fx:id="thirdPlayerRec" arcHeight="5.0" arcWidth="5.0" fill="#1f93ffa1" height="160.0" layoutX="541.0" layoutY="140.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+      <Rectangle fx:id="secondPlayerRec" arcHeight="5.0" arcWidth="5.0" fill="#1f93ffa1" height="160.0" layoutX="14.0" layoutY="140.0" stroke="BLACK" strokeType="INSIDE" width="45.0" />
+      <Rectangle fx:id="firstPlayerRec" arcHeight="5.0" arcWidth="5.0" fill="#1f93ffa1" height="45.0" layoutX="221.0" layoutY="14.0" stroke="BLACK" strokeType="INSIDE" width="160.0" />
+      <Label fx:id="firstPlayerLabel" layoutX="226.0" layoutY="13.0" prefHeight="45.0" prefWidth="160.0" text="Label">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font></Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1fff2a42" height="114.0" layoutX="138.0" layoutY="473.0" stroke="BLACK" strokeType="INSIDE" width="338.0" />
+      <Rectangle fx:id="secondPlayerCardRec" arcHeight="5.0" arcWidth="5.0" fill="#00000027" height="40.0" layoutX="72.0" layoutY="200.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
+      <Rectangle fx:id="thirdPlayerCardRec" arcHeight="5.0" arcWidth="5.0" fill="#00000027" height="40.0" layoutX="470.0" layoutY="203.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
+      <Rectangle fx:id="firstPlayerCardRec" arcHeight="5.0" arcWidth="5.0" fill="#00000027" height="40.0" layoutX="271.0" layoutY="81.0" rotate="90.0" stroke="BLACK" strokeType="INSIDE" width="60.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00ff0934" height="140.0" layoutX="138.0" layoutY="323.0" stroke="BLACK" strokeType="INSIDE" width="100.0" />
+      <GridPane layoutX="201.0" layoutY="212.0" prefHeight="93.0" prefWidth="200.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="87.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="124.0" minWidth="10.0" prefWidth="113.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Motors">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <Label text="Stores" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <Label fx:id="motorsIndicatorLabel" text="Label" GridPane.columnIndex="1" />
+            <Label fx:id="storesIndicatorLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label text="Shippings" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <Label fx:id="shippingsIndicatorLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label text="Steels" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <Label fx:id="steelsIndicatorLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+      <Label fx:id="secondPlayerCardLabel" layoutX="97.0" layoutY="203.0" rotate="90.0" text="?">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="thirdPlayerCardLabel" layoutX="495.0" layoutY="206.0" rotate="-90.0" text="?">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="firstPlayerCardLabel" layoutX="296.0" layoutY="84.0" rotate="180.0" text="?">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="playerChoiceBox" layoutX="243.0" layoutY="432.0" prefHeight="31.0" prefWidth="80.0" />
+      <Button fx:id="nextButton" layoutX="321.0" layoutY="432.0" mnemonicParsing="false" onAction="#handleNextButton" prefHeight="31.0" prefWidth="54.0" text="Next" />
+      <Label fx:id="currentPlayerLabel" layoutX="151.0" layoutY="495.0" text="Label">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardFunctionLabel" layoutX="169.0" layoutY="413.0" text="Label">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardValueLabel" layoutX="169.0" layoutY="437.0" text="Label">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="motorsCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="148.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/motors.png" />
+         </image></ImageView>
+      <Label layoutX="201.0" layoutY="169.0" prefHeight="21.0" prefWidth="160.0" text="Share Indicator">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="roundLabel" layoutX="15.0" layoutY="23.0" prefHeight="27.0" prefWidth="89.0" text="Label">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="historyButton" layoutX="520.0" layoutY="550.0" mnemonicParsing="false" onAction="#handleHistoryButton" text="History" />
+      <GridPane layoutX="258.0" layoutY="473.0" prefHeight="114.0" prefWidth="217.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Money" />
+            <Label text="Motors" GridPane.rowIndex="1" />
+            <Label fx:id="moneyLabel" text="Label" GridPane.columnIndex="1" />
+            <Label fx:id="motorsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="storesLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="shippingLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="steelsLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label text="Stores" GridPane.rowIndex="2" />
+            <Label text="Shippings" GridPane.rowIndex="3" />
+            <Label text="Steels" GridPane.rowIndex="4" />
+         </children>
+      </GridPane>
+      <ImageView fx:id="storesCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="148.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/stores.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="shippingsCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="148.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/shippings.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="steelsCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="148.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/steels.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bullCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="148.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/bull.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="bearCardIcon" fitHeight="80.0" fitWidth="80.0" layoutX="148.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../image/bear.gif" />
+         </image>
+      </ImageView>
+      <Label fx:id="secondPlayerLabel" layoutX="-43.0" layoutY="201.0" prefHeight="45.0" prefWidth="160.0" rotate="90.0" text="Label">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="thirdPlayerLabel" layoutX="484.0" layoutY="193.0" prefHeight="45.0" prefWidth="160.0" rotate="-90.0" text="Label">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
