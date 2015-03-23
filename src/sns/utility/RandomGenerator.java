@@ -17,7 +17,6 @@ public class RandomGenerator {
 		{
 			Long randomId = random.nextLong();
 			existedIds.add(randomId);
-			//System.out.println(existedIds.size() + " ids");
 			return randomId;
 		}
 		

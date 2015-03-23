@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import sns.model.Card;
 import sns.model.GameMod;
 
+/**
+ * This class handle XML encoding/decoding, typically for modifying game data.
+ *  XML file cannot save a complete object so it needs to be made to save 
+ *  every single variable in the object
+ * @author Thai Kha Le
+ */
 public class HandleXML {
 	
 	public static void write(GameMod gameMod) throws Exception

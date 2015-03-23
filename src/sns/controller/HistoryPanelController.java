@@ -5,6 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * Controller of the HistoryPanel.fxml
+ * @author Thai Kha Le
+ */
 public class HistoryPanelController {
 
 	private MainApp snsApp;

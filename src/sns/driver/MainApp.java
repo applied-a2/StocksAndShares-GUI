@@ -15,21 +15,26 @@ import sns.model.Card;
 import sns.model.GameMod;
 import sns.model.Player;
 import sns.model.Shares;
+import sns.model.ValidObject;
 import sns.utility.HandleXML;
 import sns.utility.ModMaker;
 import sns.utility.RandomGenerator;
 import sns.utility.ValidRestriction;
 import javafx.application.Application;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * This class runs the game (all features)
+ * 
+ * @author Peter Hearne, Shane Halley, Ian Barnes, Abdullahi Shafii, Thai Kha Le
+ * @version 1.0 
+ */
 public class MainApp extends Application {
 
 	private GameMod gameMod;
@@ -54,6 +59,10 @@ public class MainApp extends Application {
 	public MainApp()
 	{ }
 	
+	/**
+	 * Set up the stage and show the game window
+	 * @param stage object
+	 */
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
@@ -64,6 +73,11 @@ public class MainApp extends Application {
 		System.out.println("done");
 	}
 
+	/**
+	 * Main method called when the game is 
+	 * run, let user choose which version to play
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		int version = chooseVersion();
 		if(version == 1) {
@@ -75,6 +89,10 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Print out the available version for user (clasic and grahic)
+	 * @return user's choice in integer
+	 */
 	public static int chooseVersion()
 	{
 		System.out.println("Stock And Shares game");
@@ -91,60 +109,76 @@ public class MainApp extends Application {
 	{
 		return currentPlayerFx;
 	}
+	
 	public void resetTurnCounter()
 	{
 		turnCounter = 1;
 	}
+	
 	public void plusTurnCounter()
 	{
 		turnCounter++;
 	}
+	
 	public boolean isBuyCompleted()
 	{
 		return buyCompleted;
 	}
+	
 	public void setBuyCompleted(boolean flag)
 	{
 		buyCompleted = flag;
 	}
+	
 	public void addCardIcon(Image cardIcon)
 	{
 		cardIcons.add(cardIcon);
 	}
+	
 	public ArrayList<Image> getCardIcons()
 	{
 		return cardIcons;
 	}
+	
 	public int getRound() {
 		return fxRound;
 	}
+	
 	public int getTurnCounter() 
 	{
 		return turnCounter;
 	}
+	
 	public ArrayList<Player> getPlayers()
 	{
 		return players;
 	}
+	
 	public Shares getShares() 
 	{
 		return shares;
 	}
-	public ArrayList<Card> getCards() {
+	
+	public ArrayList<Card> getCards() 
+	{
 		return cards;
 	}
+	
 	public String getHistory()
 	{
 		return history;
 	}
+	
 	public void shuffleCards()
 	{
 		Collections.shuffle(cards);
 	}
+	
 	public int getDealtCardIndex()
 	{
 		return currentDealtCardIndex;
 	}
+	
 	public void dealtCard()
 	{
 		currentDealtCardIndex = RandomGenerator.randomInt(cards.size()-1);
@@ -153,9 +187,13 @@ public class MainApp extends Application {
 	
 //<================================MAIN SETUPS=====================================>	
 	
+	/**
+	 * Default setup for the game
+	 * @param number of players
+	 */
 	public void gameSetup(int numPlayer)
 	{
-		history = "";
+		//history = "";
 		String[] defaultTypes = { "motors", "stores", "steels", "shippings" };
 		for(String defaultType: defaultTypes) {
 			mainTypes.add(defaultType);
@@ -179,13 +217,18 @@ public class MainApp extends Application {
 		System.out.println("Setup completed");
 	}
 	
-	public void setupWithMod(GameMod mod, int numPlayer)
+	/**
+	 * (For classic version) setup the game with a specific game modification
+	 * @param game modification object
+	 * @param number of players
+	 */
+	public void setupWithMod(int numPlayer)
 	{
 		while(players.size() < numPlayer) {
 			players.add(new Player(players.size()+1, 80));
 		}
-		ArrayList<String> shareTypes = mod.getShareTypes();
-		shares = new Shares(shareTypes, mod.getShareAmountEachType());
+		ArrayList<String> shareTypes = gameMod.getShareTypes();
+		shares = new Shares(shareTypes, gameMod.getShareAmountEachType());
 		mainTypes = shareTypes;
 		for(String type: shareTypes) {
 			for (int upValue = 2; upValue <= 4; upValue++)	{
@@ -195,9 +238,15 @@ public class MainApp extends Application {
 				cards.add(new Card(type, "down", downValue));
 			}
 		}
-		cards.addAll(mod.getBonusCards());
+		cards.addAll(gameMod.getBonusCards());
 	}
 	
+	/**
+	 * (JavaFx version) 
+	 * Pick out the current (not retired) player 
+	 * for an individual turn basing on the turn counter
+	 * @return list of other players (including the retired if available) 
+	 */
 	public ArrayList<Player> setupPlayersForTurnFx()
 	{
 		ArrayList<Player> otherPlayers = new ArrayList<Player>();
@@ -212,6 +261,9 @@ public class MainApp extends Application {
 		return otherPlayers;
 	}
 	
+	/**
+	 * (JavaFx version) Setup a new round 
+	 */
 	public void setupForRoundFx()
 	{
 		Collections.rotate(players,players.size() -1);
@@ -227,6 +279,11 @@ public class MainApp extends Application {
 	
 //<====================================XML PART====================================>	
 	
+	/**
+	 * Setup a new game modification by creating 
+	 * a new GameMod object (new share types, new 
+	 * amount each share and new bonus cards)
+	 */
 	public void makeMod()
 	{
 		gameMod = new GameMod(ModMaker.makeShareTypes(),
@@ -240,12 +297,20 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Load the previous game modification, put into gameMod variable
+	 * @throws Exception
+	 */
 	public void load() throws Exception
 	{
 		gameMod = HandleXML.read();
 		System.out.println("Mod loaded");
 	}
 	
+	/**
+	 * Save a new game modification
+	 * @throws Exception
+	 */
 	public void save() throws Exception
 	{
 		HandleXML.write(gameMod);
@@ -254,22 +319,28 @@ public class MainApp extends Application {
 	
 //<================================JAVA FX PART==================================>	
 	
+	public Stage getPrimaryStage()
+	{
+		return primaryStage;
+	}
+	
+	/**
+	 * Setter changing the main stage
+	 * @param object of type Stage
+	 */
 	public void setScenePrimaryStage(Scene newScene)
 	{
 		primaryStage.setScene(newScene);
 	}
 	
     /**
-     * Initializes the root layout.
+     * Initializes the root layout (background scene)
      */
     public void initRootLayout() {
         try {
-            // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("/sns/controller/RootLayout.fxml"));
             rootLayout = (BorderPane) loader.load();
-
-            // Show the scene containing the root layout.
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -278,18 +349,18 @@ public class MainApp extends Application {
         }
     }
 	
+    /**
+     * Show the intro screen of the game
+     */
 	public void showStartUp()
 	{
 		try
 		{	
-			FXMLLoader loader = new FXMLLoader(); //create a FXMLLoader
+			FXMLLoader loader = new FXMLLoader(); 
 			loader.setLocation(MainApp.class.getResource("/sns/controller/Startup.fxml"));
-			//location error: open up the app source folder, try all path, with and without initial slash 
-			AnchorPane startup = (AnchorPane) loader.load(); //get the anchor pane from the loader
-			
+			AnchorPane startup = (AnchorPane) loader.load(); 
 			rootLayout.setCenter(startup);
-			
-			StartUpController controller = loader.getController(); //get the controller from the loader
+			StartUpController controller = loader.getController();
 			controller.setApp(this); 
 		}
 		catch(IOException e)
@@ -298,6 +369,9 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Show the playing stage 
+	 */
 	public void showPlayTable()
 	{
 		try {
@@ -316,7 +390,12 @@ public class MainApp extends Application {
 		}
 	}
 	
-	public boolean showBuyOrSellPanel(String function)
+	/**
+	 * Show the transaction panel. 
+	 * Usable for either when player choose to buy share or sell share  
+	 * @param function (buy or sell in String) 
+	 */
+	public void showBuyOrSellPanel(String function)
 	{
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -340,10 +419,11 @@ public class MainApp extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		return false;
 	}
 	
+	/**
+	 * Show the result panel
+	 */
 	public void showGameResult()
 	{
 		try {
@@ -363,6 +443,9 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Pop up a window showing all dealt cards in a round 
+	 */
 	public void showExposingCards()
 	{
 		try {
@@ -388,6 +471,10 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Pop up a window showing history of 
+	 * share indicators through game rounds
+	 */
 	public void showHistoryPanel()
 	{
 		try {
@@ -412,6 +499,9 @@ public class MainApp extends Application {
 		}
 	}
 	
+	/**
+	 * Write the share indicator of current round to the history string
+	 */
 	public void writeHistory()
 	{
 		history += "Round " + fxRound 
@@ -421,13 +511,13 @@ public class MainApp extends Application {
 	
 //<================================CONSOLE PART===================================>
 	
-	/*
+	/**
 	 * Main driver of classic version
 	 */
 	public void display() {
 		System.out.println("How many players?");
 		System.out.print("==>");
-		int numPlayers = input.nextInt();
+		int numPlayers = ValidRestriction.restrictInteger(1, 7, "You can only choose between 2 and 6 players");
 		classicChoices(numPlayers);
 		System.out.println(players.size() + " players");
 		System.out.println("Number of shares: " + shares.getShares().size());
@@ -442,7 +532,10 @@ public class MainApp extends Application {
 		sellAll();
 	}
 	
-	//case 2 does not need break since mod needs to be loaded anyway
+	/**
+	 * Print out 3 options for classic version
+	 * @param number of players
+	 */
 	public void classicChoices(int numPlayers)
 	{
 		System.out.println("Options:");
@@ -450,15 +543,15 @@ public class MainApp extends Application {
 		System.out.println("2) Modify the game");
 		System.out.println("3) Load previous modification");
 		System.out.print("===>");
-		int choice = input.nextInt();
+		int choice = ValidRestriction.restrictInteger(0, 4, "Don't have that choice");
 		switch (choice) {
 			case 1: gameSetup(numPlayers);break;
 			case 2: makeMod(); 
-					setupWithMod(gameMod, numPlayers);
+					setupWithMod(numPlayers);
 					break;
 			case 3: try {
 						load();
-						setupWithMod(gameMod, numPlayers);
+						setupWithMod(numPlayers);
 					}
 					catch (Exception e) {
 						e.printStackTrace();
@@ -469,7 +562,7 @@ public class MainApp extends Application {
 		
 	}
 	
-	/*
+	/**
 	 * Run an individual round of the game
 	 * @param round number
 	 */
@@ -503,6 +596,10 @@ public class MainApp extends Application {
 		updateShares();
 	}
 	
+	/**
+	 * Setup a round
+	 * @param round number
+	 */
 	public void setupRoundConsole(int round) {
 		if(round != 1) {
 			Collections.rotate(players,players.size() -1);
@@ -512,7 +609,7 @@ public class MainApp extends Application {
 		buyCompleted = false;
 	}
 	
-	/*
+	/**
 	 * This method asks player to choose an action (buy, sell or do nothing),
 	 * @return boolean value indicating whether player has finished his turn
 	 */
@@ -549,7 +646,7 @@ public class MainApp extends Application {
 	}
 	
 	
-	/*
+	/**
 	 * Print out all the share types the game has 
 	 */
 	public void printMainTypes()
@@ -562,7 +659,7 @@ public class MainApp extends Application {
 		}
 	}
 	
-	/*
+	/**
 	 * Print the share indicator (records of shares' values)
 	 */
 	public void printShareIndicator() {
@@ -577,7 +674,7 @@ public class MainApp extends Application {
 	}
 	
 	
-	/*
+	/**
 	 * This prints out shares bought by player, 
 	 * along with their current value
 	 */
@@ -593,7 +690,10 @@ public class MainApp extends Application {
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	}
 	
-	
+	/**
+	 * Get a share type from player, if a choice does not exists, ask again
+	 * @return chosen share type in String
+	 */
 	public String getChosenCommodityTypeFromPlayer()
 	{
 		String commodityTypeToBeBoughtOrSold = "";
@@ -612,11 +712,17 @@ public class MainApp extends Application {
 		return commodityTypeToBeBoughtOrSold;
 	}
 	
+	/**
+	 * Transaction stage, usable for both buying and selling
+	 * @param current player
+	 * @param choice ("buy" or "sell")
+	 * @return boolean value indicating whether player has finished
+	 */
 	public boolean consoleTransaction(Player player, String choice) {
 		printMainTypes();
 		String shareType = getChosenCommodityTypeFromPlayer();
 		System.out.println("How many " + shareType + "?");
-		int shareNum = ValidRestriction.restrictNumber(input.nextInt());
+		int shareNum = restrictNumber(input.nextInt());
 		int sharesLimit = 0;
 		if(choice.equals("buy")){
 			sharesLimit = shares.getAvailableSharesAmount(shareType);
@@ -624,7 +730,7 @@ public class MainApp extends Application {
 		else {
 			sharesLimit = shares.getAmountOfSharesSoldToPlayer(shareType, player.playerId());
 		}
-		if (ValidRestriction.checkValid(shareNum, player.getMoney(),
+		if (checkValid(shareNum, player.getMoney(),
 				shares.getShareValueOnType(shareType), sharesLimit, choice, shareType).hasNoError()) {
 			if((choice.equals("buy"))&&(confirmFinished("Confirm purchasing"))) {
 				buyShares(player,shareType, shareNum);
@@ -642,7 +748,7 @@ public class MainApp extends Application {
 		return confirmFinished("Finished?");
 	}
 	
-	/*
+	/**
 	 * Ask for player's confirmation
 	 * @param message to print (detail of the confirmation)
 	 * @return player's decision of type boolean
@@ -655,8 +761,66 @@ public class MainApp extends Application {
 		return (answer == 'y');
 	}
 	
+	public int restrictNumber(int num) {
+		if (num <= 5)  {
+			return num;
+		}
+		for (int i = 5; (i + 5) <= 20; i += 5) {
+			if (num == (i+5)) {
+				return num;
+			}
+			else if ((num > i)&&(num < i+5)) {
+				num = i + 5;
+				System.out.println("If more than 5 shares"
+						+ ", \nyou can only buy 10, 15 or "
+						+ "20 shares \n ---> amount changed to " + num);
+			}
+		}
+		return num;
+	}
+	
 //<=================METHODS FOR BOTH JAVAFX AND CONSOLE VERSION=====================>	
 
+	/**
+	 * This method creates an object containning a boolean indicating whether data is valid,
+	 *  if not, the String variable will contain an error message. 
+	 *  Usable for all version (ie. Classic version only needs a boolean while JavaFx needs both 
+	 *  a boolean and a message) and all functions (either buying or selling)
+	 * @param number (eg. amount of shares to buy/sell, ...)
+	 * @param current money of player
+	 * @param value of the type of share
+	 * @param available share for player to buy or available shares that player has
+	 * @param "buy" or "sell"
+	 * @param type of the share
+	 * @return an object of type ValidObject
+	 */
+	public ValidObject checkValid(int num, 
+			int currentMoney, int value, int sharesLimit, String function, String shareType) {
+		ValidObject valid = new ValidObject(true,"");
+		if(num < 0) {
+			System.out.println("Error negative amount");
+			valid.setNoError(false);
+			valid.addErrorMessage("Error negative amount");
+		}
+		if (num > sharesLimit) {
+			System.out.println("There are not enough " + shareType + " to " + function);
+			valid.setNoError(false);
+			valid.addErrorMessage("There are not enough " + shareType + " to " + function);
+		}
+		if((function.equals("buy"))&&(currentMoney < num*value)) {
+			System.out.println("You don't have enough money");
+			valid.setNoError(false);
+			valid.addErrorMessage("You don't have enough money");
+		}
+		return valid;
+	}
+	
+	/**
+	 * Purchasing mechanism, using for all playing versions
+	 * @param current player
+	 * @param share type
+	 * @param amount
+	 */
 	public void buyShares(Player currentPlayer, String type, int amount)
 	{
 		ArrayList<Long> availableShareIds = shares.getAvailableShareIds(type);
@@ -670,6 +834,12 @@ public class MainApp extends Application {
 		buyCompleted = true;	
 	}
 	
+	/**
+	 * Selling mechanism, using for all playing versions
+	 * @param current player
+	 * @param share type
+	 * @param amount
+	 */
 	public void sellShares(Player currentPlayer,String shareType, int amount)
 	{
 		ArrayList<Long> shareIdsBoughtByPlayer 
@@ -684,9 +854,8 @@ public class MainApp extends Application {
 		System.out.println("Sell completed");
 	}
 	
-	/*
-	 * Update the shares values using all the dealt card
-	 * in round
+	/**
+	 * Update the shares values using all the dealt cards in round
 	 */
 	public void updateShares()
 	{
@@ -700,15 +869,31 @@ public class MainApp extends Application {
 				cardValue = -cardValue;
 			}
 			
-			for(String shareType: mainTypes) {
-				if(shareType.equals(cardType)
-						||cardType.equals("bear")||cardType.equals("bull")) {
-					shares.updateOneTypeOfShare(shareType,cardValue);
+			for(String shareType: mainTypes) {	
+				if(gameMod == null) {
+					if(shareType.equals(cardType)
+							||cardType.equals("bear")||cardType.equals("bull")) {
+						shares.updateOneTypeOfShare(shareType,cardValue);
+					}
 				}
+				else {
+					if(shareType.equals(cardType)) {
+						shares.updateOneTypeOfShare(shareType,cardValue);
+					}
+					for(Card bonusCard: gameMod.getBonusCards()) {
+						if(bonusCard.getCardType().equals(cardType)) {
+							shares.updateOneTypeOfShare(shareType,bonusCard.getCardValue());
+						}
+					}
+				}	
 			}
 		}
 	}
 	
+	/**
+	 * Sell all players' shares with the value 
+	 * recorded on the latest share indicator
+	 */
 	public void sellAll()
 	{
 		for(Player player: players) {

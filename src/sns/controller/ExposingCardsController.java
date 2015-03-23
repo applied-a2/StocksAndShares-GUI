@@ -12,6 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+/**
+ * Controller of the ExposingCards.fxml
+ * @author Thai Kha Le
+ */
 public class ExposingCardsController {
 	
 	private MainApp snsApp;
@@ -100,8 +104,7 @@ public class ExposingCardsController {
 		Label[] cardFunctions = {firstCardFunction, secondCardFunction, thirdCardFunction, fourthCardFunction};
 		Label[] cardValues = {firstCardValue, secondCardValue, thirdCardValue, fourthCardValue};
 		
-		for(int i = 0; i < dealtCardIndexInRound.size(); i++)
-		{
+		for(int i = 0; i < dealtCardIndexInRound.size(); i++) {
 			cardRecs[i].setVisible(true);
 			cardIcons[i].setImage(snsApp.getCardIcons().get(i));
 			cardIcons[i].setVisible(true);

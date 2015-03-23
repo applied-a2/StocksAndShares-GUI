@@ -1,14 +1,12 @@
 package sns.controller;
 
 import java.util.ArrayList;
-
-import org.controlsfx.dialog.Dialogs;
-
 import sns.driver.MainApp;
 import sns.model.Commodity;
 import sns.model.Player;
 import sns.model.Shares;
 import sns.model.ValidObject;
+import sns.utility.ErrorPrinter;
 import sns.utility.ValidRestriction;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,11 +15,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Controller of the TransactionPanel.fxml
+ * @author Thai Kha Le
+ */
 public class TransactionPanelController {
 
-	private MainApp snsApp;
-	//private Player currentPlayer;
-	
+	private MainApp snsApp;	
 	private Stage transactionStage;
 	private String function;
 	private String[] mainTypes = { "motors", "stores", "shippings",  "steels"};
@@ -35,15 +35,7 @@ public class TransactionPanelController {
 	@FXML
 	private Label shippingsLabel;
 	@FXML
-	private Label steelsLabel;
-	
-	//private boolean buyCompleted = false;
-	
-	public void setApp(MainApp app)
-	{
-		snsApp = app;
-	}
-	
+	private Label steelsLabel;	
 	@FXML
 	private ChoiceBox motors;
 	@FXML
@@ -51,16 +43,18 @@ public class TransactionPanelController {
 	@FXML
 	private ChoiceBox shippings;
 	@FXML
-	private ChoiceBox steels;
-	
-	//private ChoiceBox[] choiceBoxes = {motors, stores, shippings, steels};
-	
+	private ChoiceBox steels;	
 	@FXML
 	private Button buyOrSellButton = new Button();
 	
 	@FXML
 	private void initialize()
 	{ }
+	
+	public void setApp(MainApp app)
+	{
+		snsApp = app;
+	}
 	
 	public void setFunction(String function)
 	{
@@ -72,7 +66,6 @@ public class TransactionPanelController {
 		transactionStage = stage;
 	}
 	
-	@SuppressWarnings("deprecation")
 	@FXML
 	private void handleBuyOrSellButton()
 	{
@@ -87,19 +80,22 @@ public class TransactionPanelController {
 			Player currentPlayer = snsApp.getCurrentPlayer();
 			int[] choices = {motorsChoice,storesChoice,shippingsChoice,steelsChoice};
 			ArrayList<ValidObject> valids = new ArrayList<ValidObject>();
+			int total = 0;
 			for(int i = 0; i < choices.length; i++) {
 				if(function.equals("buy")) {
-					valids.add(ValidRestriction.checkValid(choices[i], currentPlayer.getMoney(), 
+					valids.add(snsApp.checkValid(choices[i], currentPlayer.getMoney(), 
 							snsApp.getShares().getShareValueOnType(mainTypes[i]), 
 							snsApp.getShares().getAvailableSharesAmount(mainTypes[i]) ,function, mainTypes[i]));
 				}
 				else {
-					valids.add(ValidRestriction.checkValid(choices[i], currentPlayer.getMoney(), 
+					valids.add(snsApp.checkValid(choices[i], currentPlayer.getMoney(), 
 							snsApp.getShares().getShareValueOnType(mainTypes[i]), 
 							snsApp.getShares().getAmountOfSharesSoldToPlayer(mainTypes[i], currentPlayer.playerId()) ,function, mainTypes[i]));
 				}
+				total += choices[i] * snsApp.getShares().getShareValueOnType(mainTypes[i]);
 			}
 			
+			//Make sure each choice box contains a valid number and all of them make a total valid number
 			boolean noError = true;
 			String errorMessage = ""; 
 			for(ValidObject valid: valids) {
@@ -108,6 +104,11 @@ public class TransactionPanelController {
 				}
 				errorMessage += valid.getErrorMessage();
 			}
+			
+			if(total > currentPlayer.getMoney()) {
+				errorMessage = "\nYou don't have enough money";
+			}
+			
 			if((errorMessage.equals(""))&&(noError)) {
 				if(function.equals("buy")) {
 					giveSharesToPlayer(choices, currentPlayer);
@@ -119,22 +120,15 @@ public class TransactionPanelController {
 				snsApp.showPlayTable();
 			}
 			else {
-				printError(errorMessage);
+				ErrorPrinter.printError(snsApp.getPrimaryStage(), 
+						"Error", "", errorMessage);
 			}
 		}
 		else {
 			System.out.println(emptyError);
-			printError(emptyError);
+			ErrorPrinter.printError(snsApp.getPrimaryStage(), 
+					"Error", "", emptyError);
 		}
-	}
-	
-	private void printError(String error)
-	{
-		Dialogs.create()
-		.title("Error")
-		.masthead("")
-		.message(error)
-		.showWarning();
 	}
 	
 	private String checkEmpty()

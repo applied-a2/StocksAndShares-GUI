@@ -6,6 +6,10 @@ import sns.model.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
+/**
+ * Controller of the GameResult.fxml
+ * @author Thai Kha Le
+ */
 public class GameResultController {
 	
 	private ArrayList<Player> players;
@@ -22,7 +26,7 @@ public class GameResultController {
 	}
 	
 	public GameResultController()
-	{}
+	{ }
 	
 	@FXML
 	private void initialize()
@@ -36,10 +40,8 @@ public class GameResultController {
 		String result = "";
 		
 		int money = 0;
-		for(Player player: players)
-		{
-			if(player.getMoney() > money)
-			{
+		for(Player player: players) {
+			if(player.getMoney() > money) {
 				money = player.getMoney();
 				winner = player.toString();
 			}

@@ -14,8 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Controller of the PlayTable.fxml
+ * @author Thai Kha Le
+ */
 public class PlayTableController {
-
+	
 	private MainApp snsApp;
 	private int round;
 	
@@ -145,7 +149,6 @@ public class PlayTableController {
 		Shares shares = snsApp.getShares();
 		ArrayList<Player> otherPlayers = snsApp.setupPlayersForTurnFx();
 		Player currentPlayer = snsApp.getCurrentPlayer();
-	
 		currentPlayerLabel.setText("Player " + currentPlayer.getIdentity());
 		moneyLabel.setText("" + currentPlayer.getMoney() + " pound");
 		
@@ -160,7 +163,6 @@ public class PlayTableController {
 		}
 		
 		int dealtCardIndex = snsApp.getDealtCardIndex();
-		
 		String cardType = snsApp.getCards().get(dealtCardIndex).getCardType();
 		
 		if(cardType.equals("motors")) {
@@ -190,7 +192,6 @@ public class PlayTableController {
 		
 		String cardFunction = snsApp.getCards().get(dealtCardIndex).getCardFunction();
 		cardFunctionLabel.setText(cardFunction);
-		
 		String cardValue = "" + snsApp.getCards().get(dealtCardIndex).getCardValue() + ".00";
 		cardValueLabel.setText(cardValue);
 		
@@ -199,8 +200,7 @@ public class PlayTableController {
 		Label[] playerCardLabels = {firstPlayerCardLabel,secondPlayerCardLabel,thirdPlayerCardLabel};
 		Rectangle[] playerCardRecs = {firstPlayerCardRec,secondPlayerCardRec,thirdPlayerCardRec};
 		
-		for(int i = 0; i < otherPlayers.size(); i++)
-		{
+		for(int i = 0; i < otherPlayers.size(); i++) {
 			String status = "";
 			if(otherPlayers.get(i).retired()) {
 				status = " (retired)";
