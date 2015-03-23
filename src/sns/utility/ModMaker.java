@@ -27,7 +27,7 @@ public class ModMaker {
 			while(asking) {
 				System.out.print("Type " + (i + 1) + ": ");
 				String shareType = ValidRestriction.restrictString(5,8);
-				if(checkUniqueType(shareType)) {
+				if(existedTypes.contains(shareType) == false) {
 					shareTypes.add(shareType);
 					existedTypes.add(shareType);
 					System.out.println(shareType + " added");
@@ -57,12 +57,12 @@ public class ModMaker {
 		System.out.print("===>");
 		int num = input.nextInt();
 		for(int i = 0; i < num; i++) {
-			System.out.print("Card " + i + " name: ");
 			String name = "";
 			boolean asking = true;
 			while(asking) {
+				System.out.print("Card " + i + " name: ");
 				name = ValidRestriction.restrictString(5,8);
-				if(checkUniqueType(name)) {
+				if(existedTypes.contains(name) == false) {
 					existedTypes.add(name);
 					asking = false;
 				}
@@ -88,20 +88,5 @@ public class ModMaker {
 			bonusCards.add(new Card(name, function, value));
 		}
 		return bonusCards;
-	}
-	
-	public static boolean checkUniqueType(String nType)
-	{
-		if(existedTypes.size() == 0) {
-			return true;
-		}
-		else {
-			for(String existedType: existedTypes) {
-				if(existedType.equals(nType)) {
-					return false;
-				}
-			}
-			return true;
-		}
 	}
 }

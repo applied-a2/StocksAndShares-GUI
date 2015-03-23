@@ -105,6 +105,10 @@ public class MainApp extends Application {
 	}
 	
 	//Some essential getters and setters for JavaFx version
+	public Stage getPrimaryStage()
+	{
+		return primaryStage;
+	}
 	public Player getCurrentPlayer()
 	{
 		return currentPlayerFx;
@@ -177,12 +181,6 @@ public class MainApp extends Application {
 	public int getDealtCardIndex()
 	{
 		return currentDealtCardIndex;
-	}
-	
-	public void dealtCard()
-	{
-		currentDealtCardIndex = RandomGenerator.randomInt(cards.size()-1);
-		dealtCardIndexInRound.add(currentDealtCardIndex);
 	}
 	
 //<================================MAIN SETUPS=====================================>	
@@ -290,7 +288,6 @@ public class MainApp extends Application {
 				ModMaker.shareAmountEachType(), ModMaker.bonusCard());
 		try {
 			save();
-			System.out.println("Mod saved");
 		}
 		catch (Exception e) {
 			e.printStackTrace();
@@ -317,12 +314,7 @@ public class MainApp extends Application {
 		System.out.println("Mod saved");
 	}	
 	
-//<================================JAVA FX PART==================================>	
-	
-	public Stage getPrimaryStage()
-	{
-		return primaryStage;
-	}
+//<====================================JAVA FX PART=======================================>	
 	
 	/**
 	 * Setter changing the main stage
@@ -559,7 +551,6 @@ public class MainApp extends Application {
 					;break;
 			default: ;break; 
 		}
-		
 	}
 	
 	/**
@@ -572,9 +563,10 @@ public class MainApp extends Application {
 		for(Player currentPlayer: players)	{
 			if(!currentPlayer.retired()) {
 				System.out.println("Player " + currentPlayer.getIdentity());
-				int randomCardIndex = RandomGenerator.randomInt(cards.size() - 1); 
-				dealtCardIndexInRound.add(randomCardIndex);
-				System.out.println(cards.get(randomCardIndex).toString());	
+//				int randomCardIndex = RandomGenerator.randomInt(cards.size() - 1); 
+//				dealtCardIndexInRound.add(randomCardIndex);
+				dealtCard();
+				System.out.println(cards.get(currentDealtCardIndex).toString());	
 				boolean playerTurn = true;	
 				printPlayerShares(currentPlayer);		
 				buyCompleted = false;					
@@ -761,6 +753,13 @@ public class MainApp extends Application {
 		return (answer == 'y');
 	}
 	
+	/**
+	 * If amount of share passed in is greater than 5, it is made 10, 15 or 20.
+	 * But if it is not valid at all, no change is made, other methods will 
+	 * handle that 
+	 * @param amount of share
+	 * @return restricted amount of share
+	 */
 	public int restrictNumber(int num) {
 		if (num <= 5)  {
 			return num;
@@ -781,6 +780,31 @@ public class MainApp extends Application {
 	
 //<=================METHODS FOR BOTH JAVAFX AND CONSOLE VERSION=====================>	
 
+	
+	/**
+	 * Dealt card, actually dealt the index of the cards array list and make sure 
+	 * the same index is used only once per round
+	 */
+	public void dealtCard()
+	{
+		if(dealtCardIndexInRound.size() == 0) {
+			currentDealtCardIndex = RandomGenerator.randomInt(cards.size()-1);
+			dealtCardIndexInRound.add(currentDealtCardIndex);
+		}
+		else {
+			boolean flag = true;
+			int random = -999;
+			while(flag) {
+				random = RandomGenerator.randomInt(cards.size()-1);
+				if(dealtCardIndexInRound.contains(random) == false) {
+					flag = false;
+				}
+			}
+			currentDealtCardIndex = random;
+			dealtCardIndexInRound.add(currentDealtCardIndex);
+		}
+	}
+	
 	/**
 	 * This method creates an object containning a boolean indicating whether data is valid,
 	 *  if not, the String variable will contain an error message. 
