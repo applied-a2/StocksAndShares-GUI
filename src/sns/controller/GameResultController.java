@@ -2,6 +2,7 @@ package sns.controller;
 
 import java.util.ArrayList;
 
+import sns.driver.MainApp;
 import sns.model.Player;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +13,7 @@ import javafx.scene.control.Label;
  */
 public class GameResultController {
 	
-	private ArrayList<Player> players;
+	private MainApp snsApp;
 	
 	@FXML
 	private Label winnerLabel;
@@ -20,9 +21,9 @@ public class GameResultController {
 	@FXML
 	private Label resultLabel;
 	
-	public void setPlayers(ArrayList<Player> players)
+	public void setApp(MainApp app)
 	{
-		this.players = players; 
+		snsApp = app;
 	}
 	
 	public GameResultController()
@@ -30,25 +31,12 @@ public class GameResultController {
 	
 	@FXML
 	private void initialize()
-	{
-		players = new ArrayList<Player>();
-	}
+	{ }
 	
 	public void secondInitialize()
 	{		
-		String winner = "";
-		String result = "";
-		
-		int money = 0;
-		for(Player player: players) {
-			if(player.getMoney() > money) {
-				money = player.getMoney();
-				winner = player.toString();
-			}
-			result += player.toString();
-		}
-		
-		winnerLabel.setText(winner);
-		resultLabel.setText(result);
+		snsApp.findWinner();
+		winnerLabel.setText(snsApp.getWinner());
+		resultLabel.setText("Result after 12 rounds: \n\n" + snsApp.getResult());
 	}
 }

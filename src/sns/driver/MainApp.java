@@ -31,7 +31,16 @@ import javafx.stage.Stage;
 
 /**
  * This class runs the game (all features)
- * 
+ * With Classic version (run the game on console), player can choose to play the default 
+ * version that matches the original rules or create a new modification with new types of 
+ * shares, new amount and new bonus cards.
+ * With JavaFx version, the MainApp object, which is this class's, will setup the controllers
+ * of each stage of the game and pass itself around those. Each controller is associated with
+ * an fxml file (which is the separate graphic design in marked-up language) and is "initialized"
+ *  twice (first automatically and second manually) because when the method load() of an 
+ *  FXMLLoader object is called, first initialize method is triggered immediately. Thus, the 
+ *  second one is called after MainApp's data has been passed to the controller so that it can
+ *   catch up with the game.
  * @author Peter Hearne, Shane Halley, Ian Barnes, Abdullahi Shafii, Thai Kha Le
  * @version 1.0 
  */
@@ -39,6 +48,8 @@ public class MainApp extends Application {
 
 	private GameMod gameMod;
 	private Scanner input = new Scanner(System.in);
+	private String winner = "";
+	private String result = "";
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
@@ -112,6 +123,16 @@ public class MainApp extends Application {
 	public Player getCurrentPlayer()
 	{
 		return currentPlayerFx;
+	}
+	
+	public String getWinner()
+	{
+		return winner;
+	}
+	
+	public String getResult()
+	{
+		return result;
 	}
 	
 	public void resetTurnCounter()
@@ -426,7 +447,7 @@ public class MainApp extends Application {
 			
 			Scene gameResultScene = new Scene(gameResult);
 			GameResultController controller = loader.getController();
-			controller.setPlayers(players);
+			controller.setApp(this);
 			controller.secondInitialize();
 			
 			primaryStage.setScene(gameResultScene);
@@ -522,6 +543,9 @@ public class MainApp extends Application {
 			printShareIndicator();	
 		}
 		sellAll();
+		findWinner();
+		System.out.println("Result\n" + result);
+		System.out.println("Winner\n" + winner);
 	}
 	
 	/**
@@ -563,8 +587,6 @@ public class MainApp extends Application {
 		for(Player currentPlayer: players)	{
 			if(!currentPlayer.retired()) {
 				System.out.println("Player " + currentPlayer.getIdentity());
-//				int randomCardIndex = RandomGenerator.randomInt(cards.size() - 1); 
-//				dealtCardIndexInRound.add(randomCardIndex);
 				dealtCard();
 				System.out.println(cards.get(currentDealtCardIndex).toString());	
 				boolean playerTurn = true;	
@@ -787,22 +809,16 @@ public class MainApp extends Application {
 	 */
 	public void dealtCard()
 	{
-		if(dealtCardIndexInRound.size() == 0) {
-			currentDealtCardIndex = RandomGenerator.randomInt(cards.size()-1);
-			dealtCardIndexInRound.add(currentDealtCardIndex);
-		}
-		else {
-			boolean flag = true;
-			int random = -999;
-			while(flag) {
-				random = RandomGenerator.randomInt(cards.size()-1);
-				if(dealtCardIndexInRound.contains(random) == false) {
-					flag = false;
-				}
+		boolean flag = true;
+		int random = -999;
+		while(flag) {
+			random = RandomGenerator.randomInt(cards.size()-1);
+			if(dealtCardIndexInRound.contains(random) == false) {
+				flag = false;
 			}
-			currentDealtCardIndex = random;
-			dealtCardIndexInRound.add(currentDealtCardIndex);
 		}
+		currentDealtCardIndex = random;
+		dealtCardIndexInRound.add(currentDealtCardIndex);
 	}
 	
 	/**
@@ -931,6 +947,29 @@ public class MainApp extends Application {
 					moneyToReceive += shares.getShareValueOnId(shareId);
 				}
 				player.setMoney(player.getMoney() + moneyToReceive);
+			}
+		}
+	}
+	
+	/**
+	 * Determine the winner of the game
+	 */
+	public void findWinner()
+	{
+		int highestMoney = -1;
+		for(Player player: players) {
+			if(!player.retired()) {
+				if(player.getMoney() > highestMoney) {
+					highestMoney = player.getMoney();
+					winner = player.toString();
+				}
+				else if (player.getMoney() == highestMoney) {
+					winner += player.toString();
+				}
+				result += player.toString();
+			}
+			else {
+				result += "Player " + player.getIdentity() + " (retired) \n";
 			}
 		}
 	}

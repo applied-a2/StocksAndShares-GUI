@@ -49,7 +49,7 @@ public class StartUpController {
 			snsApp.gameSetup(numPlayer);
 			snsApp.shuffleCards();
 			snsApp.dealtCard();
-			snsApp.showPlayTable();;
+			snsApp.showPlayTable();
 			System.out.println("Number of players: " + numPlayer);
 		}
 	}
